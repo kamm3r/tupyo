@@ -20,6 +20,7 @@ import {
 import { Input } from "~/@/components/ui/input";
 import { Button } from "~/@/components/ui/button";
 import { Trash2Icon } from "lucide-react";
+import { ModeToggle } from "~/components/themeToggle";
 
 const createQuestionValidator = z.object({
   question: z.string().min(5).max(600),
@@ -45,13 +46,13 @@ const CreateQuestionForm = () => {
     control: form.control, // control props comes from useForm (optional: if you are using FormContext)
   });
 
-  const { mutate, isLoading, data } = api.questions.create.useMutation({
+  const { mutate, isPending, data } = api.questions.create.useMutation({
     onSuccess: async (data) => {
       await router.push(`/question/${data.id}`);
     },
   });
 
-  if (isLoading || data)
+  if (isPending || data)
     return (
       <div className="flex min-h-screen items-center justify-center antialiased">
         <p className="">Loading...</p>
@@ -71,6 +72,7 @@ const CreateQuestionForm = () => {
         <Link href={"/"}>
           <h1 className="cursor-pointer text-4xl font-bold">Tupyo</h1>
         </Link>
+        <ModeToggle />
       </header>
       <div className="mx-auto max-w-xl py-12 md:max-w-2xl">
         <h2 className="text-2xl font-bold">Create a new poll</h2>

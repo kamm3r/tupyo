@@ -13,6 +13,7 @@ import {
 } from "~/@/components/ui/card";
 import { CopyIcon } from "lucide-react";
 import { Button } from "~/@/components/ui/button";
+import { ModeToggle } from "~/components/themeToggle";
 
 function QuestionCard({
   question,
@@ -74,9 +75,14 @@ export default function Home() {
       </Head>
       <header className="header flex w-full items-center justify-between">
         <h1 className="text-4xl font-bold">Tupyo</h1>
-        <Link href="/create" className="rounded p-4">
-          Create New Question
-        </Link>
+        <div className="flex items-center gap-4">
+          <Button asChild>
+            <Link href="/create" className="rounded p-4">
+              Create Poll
+            </Link>
+          </Button>
+          <ModeToggle />
+        </div>
       </header>
       <main className="mt-10 grid grid-cols-1 gap-y-5 md:grid-cols-4 md:gap-x-5">
         {data?.map((question) => (

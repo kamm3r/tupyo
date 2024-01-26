@@ -1,9 +1,10 @@
-import { Vote } from "@prisma/client";
+import { type Prisma } from "@prisma/client";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Button } from "~/@/components/ui/button";
 import { Progress } from "~/@/components/ui/progress";
+import { ModeToggle } from "~/components/themeToggle";
 import { api } from "~/utils/api";
 
 type OptionType = {
@@ -27,8 +28,14 @@ const QuestionsPageContent: React.FC<{ id: string }> = ({ id }) => {
   if (!data?.question) {
     return <div>Question not found</div>;
   }
-  // TODO: fix any type in getTotalVotes
-  function getTotalVotes(votes: any): void {
+
+  function getTotalVotes(
+    votes:
+      | (Prisma.PickEnumerable<Prisma.VoteGroupByOutputType, "choice"[]> & {
+          _count: number;
+        })[]
+      | undefined,
+  ): void {
     votes?.map((choice) => {
       totalVotes += choice._count;
     });
@@ -55,7 +62,10 @@ const QuestionsPageContent: React.FC<{ id: string }> = ({ id }) => {
         <Link href={"/"}>
           <h1 className="cursor-pointer text-4xl font-bold">Tupyo</h1>
         </Link>
-        {data?.isOwner && <div className="rounded-md p-3">You made this!</div>}
+        <div className="flex items-center gap-4">
+          <Button asChild>{data?.isOwner && <p>You made this!</p>}</Button>
+          <ModeToggle />
+        </div>
       </header>
 
       <main className="mx-auto max-w-2xl">
